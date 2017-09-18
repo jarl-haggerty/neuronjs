@@ -187,8 +187,21 @@ window.addRow = function() {
     document.getElementById("parameter-table").appendChild(clone);
 }
 
+function getParentElementByTagName(element, tagName) {
+    tagName = tagName.toUpperCase()
+    console.log("START")
+    console.log(element.tagName)
+    do  {
+	element = element.parentElement
+	console.log(element.tagName)
+    } while (element.tagName.toUpperCase() !== tagName)
+    console.log("END")
+    return element
+}
+
 window.onSliderChange = function (slider) {
-    var textField = slider.parentElement.parentElement.parentElement.getElementsByClassName("mdl-textfield__input").item(0)
+    var textField = getParentElementByTagName(slider, "td")
+	.getElementsByClassName("mdl-textfield__input").item(0)
     textField.value = "" + slider.value
     plotVoltage()
 }
@@ -196,7 +209,8 @@ window.onSliderChange = function (slider) {
 window.onTextChange = function (textField, event) {
     event.preventDefault();
     if (event.keyCode == 13 || event.type === "blur") {
-        var slider = textField.parentElement.parentElement.getElementsByClassName("mdl-slider").item(0)
+        var slider = getParentElementByTagName(textField, "td")
+	    .getElementsByClassName("mdl-slider").item(0)
         slider.value = parseFloat(textField.value)
         plotVoltage()
     }
